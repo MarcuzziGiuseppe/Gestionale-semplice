@@ -18,7 +18,7 @@
 using namespace std;
 
 #define startTag "<"
-#define endTag "/>"
+#define endTag "/>\n"
 #define marcheFile "marche.txt"
 
 // funzioni "inutili"
@@ -31,9 +31,9 @@ bool controlloDeiFile(string nomeFile);
 
 // gestione prodotti
 void stampaProdotti(vector<string> marche);
-void inserisciProdotto(vector<string> marche); // ci sto lavorando
-void rimuoviQuantitaDaProdotto (vector<string> marche);
-void infoProdotto (vector<string> marche);
+void inserisciProdotto(vector<string> *marche); // ci sto lavorando
+void rimuoviQuantitaDaProdotto (vector<string> *marche);
+void infoProdotto (vector<string> *marche);
 
 int main(int argc, char const *argv[]) {
     srand(time(NULL));
@@ -51,22 +51,15 @@ int main(int argc, char const *argv[]) {
             file >> temp;
         }
         file.close();
-
-        /*
-        for (size_t i = 0; i < marche.size(); i++) {
-            cout << marche.at(i) << endl;
-        }
-        fermaStampa();
-        */
     }
 
     do {
         clearScreen();
         cout << "Menu'" << endl
              << "--> 1) Stampa tutti i prodotti" << endl
-             << "--> 2) Inserisci un nuovo prodotto" << endl
+             << "--> 2) Inserisci un nuovo prodotto o aumenta la quantita' di uno gia' ppresente" << endl
              << "--> 3) Rimuovi quantita'" << endl
-             << "--> 4) Informazioni riguardoad un prodotto in particolare" << endl
+             << "--> 4) Informazioni riguardo ad un prodotto in particolare" << endl
              << "--> 0) Esci dal programma" << endl
              << "Premi il numero corrispondente" << endl;
         sceltaPlayer = getch();
@@ -76,13 +69,13 @@ int main(int argc, char const *argv[]) {
             stampaProdotti(marche);
             break;
         case '2':
-            inserisciProdotto(marche);
+            inserisciProdotto(&marche);
             break;
         case '3':
-            rimuoviQuantitaDaProdotto(marche);
+            rimuoviQuantitaDaProdotto(&marche);
             break;
         case '4':
-            infoProdotto(marche);
+            infoProdotto(&marche);
             break;
         case '0':
             break;
@@ -116,18 +109,33 @@ int randomNumber(int max, int min) {
 
 void stampaProdotti(vector<string> marche) {
     // stampa tutti i prodotti di tutte le marche (suddivisi per marca)
-    cout << "1" << endl;
+    cout << "Vuoi stampare tutti i prodotti o solo i prodotti di una marca in particolare?" << endl
+         << "--> 1) Tutti" << endl
+         << "--> 2) Solo una marca" << endl;
+    char inputUtente = getch();
+    if (inputUtente == '1') {
+        // stampo tutti i prodotti
+    } else {
+        
+    }
+    
+    
+    
+    
+    cout << endl << "Funizone Terminata" << endl;
     fermaStampa();
 }
 
-void inserisciProdotto(vector<string> marche) {
+void inserisciProdotto(vector<string> *marche) {
     // inserisce un prodotto di una marca o ne aggiunge una certa quantità
     string temp;
     cout << "Di quale marca vuoi inserire un prodotto?" << endl
          << "(ti ricordo di NON inserire spazi nel nome della marca)" << endl;
     cin >> temp;
-    if (find(marche.begin(), marche.end(), temp) != marche.end()) {
+    if (find(marche->begin(), marche->end(), temp+".txt") != marche->end()) {
         // marca esistente
+        cout << "Marca Trovata" << endl;
+        fermaStampa();
     } else {
         // marca non esistente
         // vuole inserirla? Si, NO 
@@ -141,22 +149,44 @@ void inserisciProdotto(vector<string> marche) {
         char scelta = getch();
         if (scelta == '1') {
             // inserisco la marca
-            marche.push_back(temp+".txt");
+            ofstream creafile(marcheFile, ios::app);
+            creafile << temp + "\n";
+            creafile.close();
+            marche->push_back(temp+".txt");
+            creafile.open(marche->back());
+            creafile.close();
         } else {
             return;
         }
     }
-    cout << "2" << endl;
+    // inserisco gli ulteriori Dati nel seguente ordine: (come viene visualizzato nel file)
+    // <codiceProdotto
+    // marca del prodotto
+    // codiceProdotto
+    // quantità del prodotto
+    // descrizioneDelProdotto
+    // \>\n
+    clearScreen();
+    cout << "Inserisci il codice del prodotto" << endl
+         << "Il codice deve essere un numero" << endl;
+    int codiceProdotto;
+    cin >> codiceProdotto;
+    // controllo se esiste il prodotto
+    ofstream inserisciDti(temp + ".txt", ios::app);
+    
+    inserisciDti.close();
+
+    cout << endl << "Funizone Terminata" << endl;
     fermaStampa();
 }
 
-void rimuoviQuantitaDaProdotto (vector<string> marche) {
+void rimuoviQuantitaDaProdotto (vector<string> *marche) {
     // rimuove una certa quantità da un prodotto
     cout << "3" << endl;
     fermaStampa();
 }
 
-void infoProdotto (vector<string> marche) {
+void infoProdotto (vector<string> *marche) {
     // mi stampa delle informazioni riguardo ad un prodotto in particolare
     cout << "4" << endl;
     fermaStampa();
