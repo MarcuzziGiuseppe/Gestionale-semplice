@@ -1,6 +1,7 @@
 /*
  * Marcuzzi Giuseppe
  * marcuzzi.giuseppe10@gmail.com
+ * 01/01/2023
  * TO DO:
  * --> fare le 3 voci del menù
  * --> ricordasi di dire che quando si inserisce una marca non bisogna mettre spazi
@@ -12,11 +13,13 @@
 #include <conio.h>
 #include <time.h>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
+#define startTag "<"
+#define endTag "/>"
 #define marcheFile "marche.txt"
-
 
 // funzioni "inutili"
 void fermaStampa();
@@ -25,6 +28,12 @@ int randomNumber(int max, int min);
 
 // gestione file
 bool controlloDeiFile(string nomeFile);
+
+// gestione prodotti
+void stampaProdotti(vector<string> marche);
+void inserisciProdotto(vector<string> marche); // ci sto lavorando
+void rimuoviQuantitaDaProdotto (vector<string> marche);
+void infoProdotto (vector<string> marche);
 
 int main(int argc, char const *argv[]) {
     srand(time(NULL));
@@ -35,8 +44,7 @@ int main(int argc, char const *argv[]) {
         creafile.close();
     } else {
         string temp;
-        ifstream file;
-        file.open(marcheFile);
+        ifstream file(marcheFile);
         file >> temp;
         while (!file.eof()) {
             marche.push_back(temp+".txt");
@@ -44,10 +52,12 @@ int main(int argc, char const *argv[]) {
         }
         file.close();
 
+        /*
         for (size_t i = 0; i < marche.size(); i++) {
             cout << marche.at(i) << endl;
         }
         fermaStampa();
+        */
     }
 
     do {
@@ -56,26 +66,30 @@ int main(int argc, char const *argv[]) {
              << "--> 1) Stampa tutti i prodotti" << endl
              << "--> 2) Inserisci un nuovo prodotto" << endl
              << "--> 3) Rimuovi quantita'" << endl
+             << "--> 4) Informazioni riguardoad un prodotto in particolare" << endl
              << "--> 0) Esci dal programma" << endl
              << "Premi il numero corrispondente" << endl;
         sceltaPlayer = getch();
         clearScreen();
         switch (sceltaPlayer) {
         case '1':
-            cout << "1" << endl;
+            stampaProdotti(marche);
             break;
         case '2':
-            cout << "2" << endl;
+            inserisciProdotto(marche);
             break;
         case '3':
-            cout << "3" << endl;
+            rimuoviQuantitaDaProdotto(marche);
+            break;
+        case '4':
+            infoProdotto(marche);
             break;
         case '0':
-            cout << "0" << endl;
             break;
         default:
             clearScreen();
-            cout << "scelta errata" << endl;
+            cout << "Scelta errata" << endl;
+            fermaStampa();
             break;
         }
     
@@ -100,22 +114,57 @@ int randomNumber(int max, int min) {
     return rand() % (max - min + 1) + min;
 }
 
-void stampaProdotti() {
-
+void stampaProdotti(vector<string> marche) {
+    // stampa tutti i prodotti di tutte le marche (suddivisi per marca)
+    cout << "1" << endl;
+    fermaStampa();
 }
 
-void inserisciProdotto() {
-
+void inserisciProdotto(vector<string> marche) {
+    // inserisce un prodotto di una marca o ne aggiunge una certa quantità
+    string temp;
+    cout << "Di quale marca vuoi inserire un prodotto?" << endl
+         << "(ti ricordo di NON inserire spazi nel nome della marca)" << endl;
+    cin >> temp;
+    if (find(marche.begin(), marche.end(), temp) != marche.end()) {
+        // marca esistente
+    } else {
+        // marca non esistente
+        // vuole inserirla? Si, NO 
+        // se si la inseriamo e andimao avanti se no lo facciamo tornare al menù principale
+        clearScreen();
+        cout << "Marca non trovata, la marca inserita e': " << temp << endl
+             << "Vuoi inserirla?: " << endl
+             << "--> 1) Si" << endl
+             << "--> 2) No" << endl
+             << "Premi il numero corrispondente" << endl;
+        char scelta = getch();
+        if (scelta == '1') {
+            // inserisco la marca
+            marche.push_back(temp+".txt");
+        } else {
+            return;
+        }
+    }
+    cout << "2" << endl;
+    fermaStampa();
 }
 
-void rimuoviQuantitaDaProdotto () {
+void rimuoviQuantitaDaProdotto (vector<string> marche) {
+    // rimuove una certa quantità da un prodotto
+    cout << "3" << endl;
+    fermaStampa();
+}
 
+void infoProdotto (vector<string> marche) {
+    // mi stampa delle informazioni riguardo ad un prodotto in particolare
+    cout << "4" << endl;
+    fermaStampa();
 }
 
 bool controlloDeiFile(string nomeFile) {
     // ritorna true se il file esiste altrimenti ritorna false
-    ifstream file;
-    file.open(nomeFile);
+    ifstream file(nomeFile);
     if (file) {
         file.close();
         return true;
