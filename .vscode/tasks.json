@@ -9,6 +9,7 @@
 				"-fdiagnostics-color=always",
 				"-g",
 				"-Wall",
+				"-static",
 				"${file}",
 				"-o",
 				"${fileDirname}\\${fileBasenameNoExtension}.exe"
