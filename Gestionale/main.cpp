@@ -1,10 +1,8 @@
 /*
  * Marcuzzi Giuseppe
  * marcuzzi.giuseppe10@gmail.com
- * 01/01/2023
+ * 01/01/2023 - 04/01/2023
  * TO DO:
- * --> fare le 3 voci del menù
- * --> ricordasi di dire che quando si inserisce una marca non bisogna mettre spazi
 */
 
 #include <iostream>
@@ -35,9 +33,8 @@ int randomNumber(int max, int min);
 bool controlloDeiFile(string nomeFile);
 
 // gestione prodotti
-void stampaProdotti(vector<string> marche); // ci sto lavorandos
+void stampaProdotti(vector<string> marche); // ci sto lavorando
 void inserisciProdotto(vector<string> *marche, bool togliere);
-void rimuoviQuantitaDaProdotto (vector<string> *marche);
 void infoProdotto (vector<string> *marche);
 
 int main(int argc, char const *argv[]) {
